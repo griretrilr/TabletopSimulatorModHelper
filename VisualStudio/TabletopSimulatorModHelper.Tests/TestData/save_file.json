@@ -136,7 +136,7 @@
   "TabStates": {
     "0": {
       "title": "Rules",
-      "body": "",
+      "body": "Body 0 (Rules)",
       "color": "Grey",
       "visibleColor": {
         "r": 0.5,
@@ -158,7 +158,7 @@
     },
     "2": {
       "title": "Brown",
-      "body": "",
+      "body": "Body 2 (Brown)",
       "color": "Brown",
       "visibleColor": {
         "r": 0.443,
@@ -308,9 +308,9 @@
         "ImageScalar": 1.0,
         "WidthScale": 1.0
       },
-      "LuaScript": "",
+      "LuaScript": "--[[ Custom board LUA! --]]",
       "LuaScriptState": "",
-      "XmlUI": "",
+      "XmlUI": "<!-- Custom board UI! -->",
       "GUID": "26c34b"
     }
   ],

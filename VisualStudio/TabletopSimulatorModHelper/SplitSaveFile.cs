@@ -1,17 +1,29 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace TabletopSimulatorModHelper
 {
     public class SplitSaveFile
     {
-        public static readonly string ScriptsPath = "Scripts";
+        public static readonly string ScriptExtension = ".lua";
+        public static readonly string TabStateFileExtension = ".bb.txt";
+        public static readonly string UIExtension = ".ui.xml";
 
         public static readonly string SplitSavePath = $"Save.split-json";
-        public static readonly string GlobalScriptPath = $"{ScriptsPath}/Global.lua";
-        public static readonly string GlobalUIPath = $"UI.xml";
+
+        public static readonly string ScriptsPath = "Scripts";
+        public static readonly string GlobalScriptPath = $"{ScriptsPath}/Global{ScriptExtension}";
+        public static readonly string ObjectScriptPathFormat = $"{ScriptsPath}/{{0}}.{{1}}{ScriptExtension}";
+
+        public static readonly string UIPath = "UI";
+        public static readonly string GlobalUIPath = $"{UIPath}/Global{UIExtension}";
+        public static readonly string ObjectUIPathFormat = $"{UIPath}/{{0}}.{{1}}{UIExtension}";
+
+        public static readonly string TabStatesPath = "Notebook";
+        public static readonly string TabStateFilePathFormat = $"{TabStatesPath}/{{0}}.{{1}}{TabStateFileExtension}";
 
         public static readonly string SplitReferenceIndicator = "[TSMH-INCLUDE]";
 
@@ -34,8 +46,33 @@ namespace TabletopSimulatorModHelper
         private static void Clean(string splitDir)
         {
             FileUtils.Delete(Path.Join(splitDir, SplitSavePath));
-            FileUtils.Delete(Path.Join(splitDir, GlobalScriptPath));
-            FileUtils.Delete(Path.Join(splitDir, GlobalUIPath));
+
+            try
+            {
+                foreach (string file in Directory.GetFiles(Path.Join(splitDir, ScriptsPath), $"*{ScriptExtension}"))
+                {
+                    FileUtils.Delete(file);
+                }
+            }
+            catch (DirectoryNotFoundException) { }
+
+            try
+            {
+                foreach (string file in Directory.GetFiles(Path.Join(splitDir, UIPath), $"*{UIExtension}"))
+                {
+                    FileUtils.Delete(file);
+                }
+            }
+            catch (DirectoryNotFoundException) { }
+
+            try
+            {
+                foreach (string file in Directory.GetFiles(Path.Join(splitDir, TabStatesPath), $"*{TabStateFileExtension}"))
+                {
+                    FileUtils.Delete(file);
+                }
+            }
+            catch (DirectoryNotFoundException) { }
         }
 
         public static void Split(string fromSaveFile, string toDir)
@@ -43,9 +80,49 @@ namespace TabletopSimulatorModHelper
             Clean(toDir);
 
             JObject saveFile = LoadJson(fromSaveFile);
+
             Split((JValue)saveFile[SaveFormat.LuaScriptKey], toDir, GlobalScriptPath);
+
             Split((JValue)saveFile[SaveFormat.UIKey], toDir, GlobalUIPath);
+
+            JObject tabStates = (JObject)saveFile[SaveFormat.TabStatesKey];
+            if (tabStates != null)
+            {
+                foreach (var tabStatePair in tabStates)
+                {
+                    SplitTabStatePair(tabStatePair, toDir);
+                }
+            }
+
+            JArray objects = (JArray)saveFile[SaveFormat.ObjectsKey];
+            if (objects != null)
+            {
+                foreach (JObject obj in objects)
+                {
+                    SplitObject(obj, toDir);
+                }
+            }
+
             SaveJson(saveFile, Path.Join(toDir, SplitSavePath));
+        }
+
+        private static void SplitTabStatePair(KeyValuePair<string, JToken> pair, string toDir)
+        {
+            string key = pair.Key;
+            JObject tabState = (JObject)pair.Value;
+            string title = (string)((JValue)tabState[SaveFormat.TabStateTitleKey]).Value;
+            string filename = string.Format(TabStateFilePathFormat, key, title);
+            Split((JValue)tabState[SaveFormat.TabStateBodyKey], toDir, filename);
+        }
+
+        private static void SplitObject(JObject obj, string toDir)
+        {
+            string name = (string)((JValue)obj[SaveFormat.ObjectNameKey]).Value;
+            string guid = (string)((JValue)obj[SaveFormat.ObjectGuidKey]).Value;
+            string scriptPath = string.Format(ObjectScriptPathFormat, name, guid);
+            string uiPath = string.Format(ObjectUIPathFormat, name, guid);
+            Split((JValue)obj[SaveFormat.LuaScriptKey], toDir, scriptPath);
+            Split((JValue)obj[SaveFormat.UIKey], toDir, uiPath);
         }
 
         private static void Split(JValue value, string toDir, string toPath)
