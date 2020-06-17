@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Prism.Ioc;
+using Prism.Unity;
 using System.Windows;
 
 namespace TabletopSimulatorModHelper.App
@@ -11,7 +7,16 @@ namespace TabletopSimulatorModHelper.App
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : PrismApplication
     {
+        protected override Window CreateShell()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

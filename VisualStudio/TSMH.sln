@@ -3,11 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TabletopSimulatorModHelper.App", "TabletopSimulatorModHelper.App\TabletopSimulatorModHelper.App.csproj", "{578D6419-4A8A-4759-8425-1912631A2DB3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TabletopSimulatorModHelper", "TabletopSimulatorModHelper\TabletopSimulatorModHelper.csproj", "{B211FAB2-6A28-4054-8EDA-96023219CD26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabletopSimulatorModHelper.Tests", "TabletopSimulatorModHelper.Tests\TabletopSimulatorModHelper.Tests.csproj", "{4393F85B-F989-440C-AF61-6EEAFCE350B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TabletopSimulatorModHelper.Tests", "TabletopSimulatorModHelper.Tests\TabletopSimulatorModHelper.Tests.csproj", "{4393F85B-F989-440C-AF61-6EEAFCE350B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{578D6419-4A8A-4759-8425-1912631A2DB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{578D6419-4A8A-4759-8425-1912631A2DB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{578D6419-4A8A-4759-8425-1912631A2DB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{578D6419-4A8A-4759-8425-1912631A2DB3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B211FAB2-6A28-4054-8EDA-96023219CD26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B211FAB2-6A28-4054-8EDA-96023219CD26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B211FAB2-6A28-4054-8EDA-96023219CD26}.Release|Any CPU.ActiveCfg = Release|Any CPU
